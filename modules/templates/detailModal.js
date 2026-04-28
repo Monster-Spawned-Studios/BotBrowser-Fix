@@ -1,4 +1,4 @@
-import { sanitizeImageUrl } from '../utils/utils.js';
+import { sanitizeImageUrl, sanitizeCardContent } from '../utils/utils.js';
 
 export function buildDetailModalHTML(cardName, imageUrl, isLorebook, cardCreator, tags, creator, websiteDesc, description, descPreview, personality, scenario, firstMessage, alternateGreetings, exampleMsg, entries, entriesCount, metadata, isBookmarked = false, isRandom = false, isImported = false, characterExistsInST = false, sourceUrlData = null, chubFeatures = null) {
     const safeImageUrl = sanitizeImageUrl(imageUrl);
@@ -112,34 +112,34 @@ function buildDetailSections(isLorebook, cardCreator, tags, creator, websiteDesc
     }
 
     if (websiteDesc) {
-        html += buildCollapsibleSection('website-desc', 'Website Description', websiteDesc);
+        html += buildCollapsibleSection('website-desc', 'Website Description', sanitizeCardContent(websiteDesc));
     }
 
     if (description) {
-        html += buildCollapsibleSection('description', 'Description', description);
+        html += buildCollapsibleSection('description', 'Description', sanitizeCardContent(description));
     } else if (!websiteDesc && descPreview) {
-        html += buildCollapsibleSection('desc-preview', 'Description Preview', descPreview);
+        html += buildCollapsibleSection('desc-preview', 'Description Preview', sanitizeCardContent(descPreview));
     }
 
     if (!isLorebook) {
         if (personality) {
-            html += buildSection('Personality', personality);
+            html += buildSection('Personality', sanitizeCardContent(personality));
         }
 
         if (scenario) {
-            html += buildSection('Scenario', scenario);
+            html += buildSection('Scenario', sanitizeCardContent(scenario));
         }
 
         if (firstMessage) {
-            html += buildSection('First Message', firstMessage);
+            html += buildSection('First Message', sanitizeCardContent(firstMessage));
         }
 
         if (alternateGreetings.length > 0) {
-            html += buildAlternateGreetingsSection(alternateGreetings);
+            html += buildAlternateGreetingsSection(alternateGreetings.map(sanitizeCardContent));
         }
 
         if (exampleMsg) {
-            html += buildSection('Example Messages', exampleMsg);
+            html += buildSection('Example Messages', sanitizeCardContent(exampleMsg));
         }
     }
 

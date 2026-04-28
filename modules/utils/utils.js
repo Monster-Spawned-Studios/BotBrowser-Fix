@@ -35,6 +35,15 @@ export function escapeHTML(text) {
         .replace(/'/g, '&#039;');
 }
 
+export function sanitizeCardContent(html) {
+    if (!html) return '';
+    return html
+        .replace(/\s+on\w+\s*=\s*"[^"]*"/gi, '')
+        .replace(/\s+on\w+\s*=\s*'[^']*'/gi, '')
+        .replace(/\s+on\w+\s*=\s*[^\s>]*/gi, '')
+        .replace(/javascript\s*:/gi, 'blocked:');
+}
+
 export function sanitizeImageUrl(url) {
     if (!url) return '';
     let trimmed = url.trim();
